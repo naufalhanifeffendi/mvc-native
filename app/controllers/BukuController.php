@@ -32,11 +32,36 @@ class BukuController
             $this->redirect('action=create', 'Gagal menyimpan data buku.', 'error');
         }
     }
+    public function edit(): void
+    {
+        $id   = (int) ($_GET['id'] ?? 0);
+        $buku = $this->model->findById($id);
 
-    // Akan diisi di Tahap 7 dan 8
-    public function edit(): void {}
-    public function update(): void {}
-    public function delete(): void {}
+        if (!$buku) {
+            http_response_code(404);
+            exit('Data buku tidak ditemukan.');
+        }
+
+        require __DIR__ . '/../views/buku/edit.php';
+    }
+
+    public function update(): void
+    {
+        $id   = (int) ($_POST['id'] ?? 0);
+        $data = $this->validateInput($_POST);
+
+        if ($data === null) {
+            $this->redirect('action=edit&id=' . $id, 'Semua field wajib diisi dengan benar.', 'error');
+        }
+
+        try {
+            $this->model->update($id, $data);
+            $this->redirect('action=index', 'Data buku berhasil diperbarui.', 'success');
+        } catch (PDOException $e) {
+            $this->redirect('action=edit&id=' . $id, 'Gagal memperbarui data buku.', 'error');
+        }
+    }
+        // >>> METHOD BARU DITAMBAH DI ATAS BARIS INI <<<
 
     // Menyimpan pesan sukses/gagal lalu pindah halaman
     private function redirect(string $query, string $message, string $type): void
