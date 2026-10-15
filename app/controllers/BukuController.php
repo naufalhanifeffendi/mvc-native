@@ -61,6 +61,17 @@ class BukuController
             $this->redirect('action=edit&id=' . $id, 'Gagal memperbarui data buku.', 'error');
         }
     }
+        public function delete(): void
+    {
+        $id = (int) ($_POST['id'] ?? 0);
+
+        try {
+            $this->model->delete($id);
+            $this->redirect('action=index', 'Buku berhasil dihapus.', 'success');
+        } catch (PDOException $e) {
+            $this->redirect('action=index', 'Gagal menghapus buku.', 'error');
+        }
+    }
         // >>> METHOD BARU DITAMBAH DI ATAS BARIS INI <<<
 
     // Menyimpan pesan sukses/gagal lalu pindah halaman
