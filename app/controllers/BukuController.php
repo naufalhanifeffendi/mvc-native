@@ -72,7 +72,6 @@ class BukuController
             $this->redirect('action=index', 'Gagal menghapus buku.', 'error');
         }
     }
-        // >>> METHOD BARU DITAMBAH DI ATAS BARIS INI <<<
 
     // Menyimpan pesan sukses/gagal lalu pindah halaman
     private function redirect(string $query, string $message, string $type): void
